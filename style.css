@@ -150,3 +150,181 @@ header{
 header h1{
     letter-spacing:2px;
 }
+.jugador{
+
+    cursor:pointer;
+
+    color:#0B6B3A;
+
+    font-weight:bold;
+
+}
+
+.jugador:hover{
+
+    text-decoration:underline;
+
+}
+#fichaJugador{
+    width:95%;
+    max-width:900px;
+    margin:30px auto;
+}
+
+.ficha{
+    background:#fff;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 8px 25px rgba(0,0,0,.15);
+}
+
+.ficha-header{
+    background:#0B6B3A;
+    color:white;
+    text-align:center;
+    padding:30px;
+}
+
+.ficha-header h2{
+    margin-top:10px;
+    font-size:34px;
+}
+
+.avatar{
+    font-size:70px;
+}
+
+.ficha-body{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:30px;
+    padding:30px;
+}
+
+.dato{
+    font-size:20px;
+    margin-bottom:12px;
+}
+
+.estadisticas{
+    background:#f4f4f4;
+    border-radius:15px;
+    padding:20px;
+}
+
+.estadisticas h3{
+    margin-bottom:15px;
+    color:#0B6B3A;
+}
+
+@media(max-width:700px){
+
+.ficha-body{
+
+grid-template-columns:1fr;
+
+}
+
+}
+
+.buscador{
+
+    width:95%;
+    max-width:500px;
+    margin:25px auto;
+    position:relative;
+
+}
+
+#buscarJugador{
+
+    width:100%;
+    padding:15px;
+    font-size:18px;
+    border-radius:12px;
+    border:1px solid #ccc;
+
+}
+
+#resultadoBusqueda{
+
+    background:white;
+    border-radius:10px;
+    box-shadow:0 5px 20px rgba(0,0,0,.15);
+    margin-top:5px;
+
+}
+
+.itemBusqueda{
+
+    padding:12px 15px;
+    cursor:pointer;
+    border-bottom:1px solid #eee;
+
+}
+
+.itemBusqueda:hover{
+
+    background:#f4f4f4;
+
+}
+
+.modal{
+
+    display:none;
+    position:fixed;
+    left:0;
+    top:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,.65);
+    z-index:999;
+
+}
+
+.modal-contenido{
+
+    width:90%;
+    max-width:700px;
+    background:white;
+    margin:40px auto;
+    border-radius:20px;
+    overflow:auto;
+    max-height:90vh;
+    animation:aparece .25s;
+
+}
+
+@keyframes aparece{
+
+from{
+
+transform:scale(.9);
+opacity:0;
+
+}
+
+to{
+
+transform:scale(1);
+opacity:1;
+
+}
+
+}
+
+.cerrar{
+
+    float:right;
+    font-size:35px;
+    cursor:pointer;
+    padding:10px 18px;
+    color:#777;
+
+}
+
+.cerrar:hover{
+
+    color:#000;
+
+}

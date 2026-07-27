@@ -21,6 +21,19 @@
 
 <main>
 
+    <div class="buscador">
+
+    <input
+        type="text"
+        id="buscarJugador"
+        placeholder="🔍 Buscar jugador..."
+        onkeyup="buscarJugador()"
+    >
+
+    <div id="resultadoBusqueda"></div>
+
+</div>
+
 <div class="menu">
 
 <button class="categoria" onclick="mostrarCategoria('A1')">CAT A1</button>
@@ -41,6 +54,17 @@
 
 </div>
 
+<div id="modalJugador" class="modal">
+
+    <div class="modal-contenido">
+
+        <span class="cerrar" onclick="cerrarModal()">&times;</span>
+
+        <div id="fichaJugador"></div>
+
+    </div>
+
+</div>
 </main>
 
 <script src="script.js"></script>
