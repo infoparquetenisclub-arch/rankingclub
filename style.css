@@ -191,7 +191,29 @@ header h1{
 }
 
 .avatar{
-    font-size:70px;
+
+    width:140px;
+    height:140px;
+
+    border-radius:50%;
+
+    overflow:hidden;
+
+    margin:auto;
+
+    margin-bottom:15px;
+
+    border:4px solid #0b7a39;
+
+}
+
+.avatar img{
+
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+
 }
 
 .ficha-body{

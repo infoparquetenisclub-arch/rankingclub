@@ -87,19 +87,33 @@ function verJugador(id){
 
     if(!jugador){
 
-        ficha.innerHTML = "<h2>Jugador no encontrado</h2>";
-        return;
+    ficha.innerHTML = "<h2>Jugador no encontrado</h2>";
+    return;
 
-    }
+}
 
-   ficha.innerHTML = `
+console.log(jugador);
+
+
+
+
+
+ficha.innerHTML = `
 
 
 <div class="ficha">
 
     <div class="ficha-header">
 
-        <div class="avatar">🎾</div>
+       <div class="avatar">
+
+    <img
+        src="fotos/${jugador[0]}.jpg"
+        alt="${jugador[1]}"
+        onerror="this.src='fotos/sinfoto.jpg'"
+    >
+
+</div>
 
         <h2>${jugador[1]}</h2>
 
