@@ -350,3 +350,27 @@ opacity:1;
     color:#000;
 
 }
+
+.partido{
+
+    margin-top:15px;
+
+    padding:12px;
+
+    border-radius:10px;
+
+    color:white;
+
+}
+
+.gano{
+
+    background:#198754;
+
+}
+
+.perdio{
+
+    background:#dc3545;
+
+}

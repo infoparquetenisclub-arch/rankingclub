@@ -151,9 +151,13 @@ ficha.innerHTML = `
 
     </div>
 
+    ${mostrarPartidos(jugador[0])}
+
 </div>
 
 `;
+
+mostrarPartidos(jugador[0]);
 
 document.getElementById("modalJugador").style.display = "block";
 
@@ -202,5 +206,63 @@ function buscarJugador(){
 function cerrarModal(){
 
     document.getElementById("modalJugador").style.display = "none";
+
+}
+
+function mostrarPartidos(idJugador){
+
+    const partidos = datosRanking["PARTIDOS"];
+    const jugadores = datosRanking["JUGADORES"];
+
+    let html = "<h3>🎾 Últimos partidos</h3>";
+
+    for(let i = partidos.length - 1; i >= 1; i--){
+
+        const partido = partidos[i];
+
+        if(
+            Number(partido[2]) === Number(idJugador) ||
+            Number(partido[3]) === Number(idJugador)
+        ){
+
+            const rivalId =
+                Number(partido[2]) === Number(idJugador)
+                ? partido[3]
+                : partido[2];
+
+            let rival = "Desconocido";
+
+            for(let j = 1; j < jugadores.length; j++){
+
+                if(Number(jugadores[j][0]) === Number(rivalId)){
+
+                    rival = jugadores[j][1];
+                    break;
+
+                }
+
+            }
+
+            const gano = Number(partido[4]) === Number(idJugador);
+
+            html += `
+                <div class="partido ${gano ? "gano" : "perdio"}">
+
+                    <strong>${gano ? "🟢 Ganó" : "🔴 Perdió"}</strong><br>
+
+                    <strong>Rival:</strong> ${rival}<br>
+
+                    <strong>Resultado:</strong> ${partido[5]}
+
+                </div>
+            `;
+
+        }
+
+    }
+
+    console.log(html);
+
+    return html;
 
 }
