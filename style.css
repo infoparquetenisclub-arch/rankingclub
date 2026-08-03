@@ -374,3 +374,20 @@ opacity:1;
     background:#dc3545;
 
 }
+
+.proximoPartido{
+
+    margin-top:20px;
+    padding:18px;
+    background:#eef9ee;
+    border-left:6px solid #198754;
+    border-radius:12px;
+
+}
+
+.proximoPartido h3{
+
+    margin-top:0;
+    color:#198754;
+
+}

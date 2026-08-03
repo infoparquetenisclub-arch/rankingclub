@@ -151,7 +151,9 @@ ficha.innerHTML = `
 
     </div>
 
-    ${mostrarPartidos(jugador[0])}
+    ${mostrarProximoPartido(jugador[0])}
+
+${mostrarPartidos(jugador[0])}
 
 </div>
 
@@ -264,5 +266,142 @@ function mostrarPartidos(idJugador){
     console.log(html);
 
     return html;
+
+}
+
+function mostrarProximoPartido(idJugador){
+
+    const partidos = datosRanking["PROXIMOS PARTIDOS"];
+
+    console.log(partidos);
+
+    if(!partidos) return "";
+
+    let html = "";
+
+    for(let i = 1; i < partidos.length; i++){
+
+        const partido = partidos[i];
+
+        if(
+            Number(partido[2]) === Number(idJugador) ||
+            Number(partido[3]) === Number(idJugador)
+        ){
+
+            const rivalId =
+                Number(partido[2]) === Number(idJugador)
+                ? partido[3]
+                : partido[2];
+
+            let rival = "Desconocido";
+
+            const jugadores = datosRanking["JUGADORES"];
+
+            for(let j = 1; j < jugadores.length; j++){
+
+                if(Number(jugadores[j][0]) === Number(rivalId)){
+
+                    rival = jugadores[j][1];
+                    break;
+
+                }
+
+            }
+
+            const fecha = new Date(partido[0]);
+
+const fechaFormateada = fecha.toLocaleDateString("es-AR");
+
+const hora = new Date(partido[1]).toLocaleTimeString("es-AR", {
+    hour: "2-digit",
+    minute: "2-digit"
+});
+
+html = `
+<div class="proximoPartido">
+
+    <h3>📅 Próximo Partido</h3>
+
+    <p><strong>Rival:</strong> ${rival}</p>
+
+    <p><strong>Fecha:</strong> ${fechaFormateada}</p>
+
+    <p><strong>Hora:</strong> ${hora}</p>
+
+    <p><strong>Cancha:</strong> ${partido[4]}</p>
+
+    <p><strong>Estado:</strong> ${partido[5]}</p>
+
+</div>
+`;
+
+            break;
+
+        }
+
+    }
+
+    return html;
+
+}
+
+function mostrarProximaFecha(){
+
+    const partidos = datosRanking["PROXIMOS PARTIDOS"];
+    const jugadores = datosRanking["JUGADORES"];
+
+    let html = `
+        <h2>📅 Próxima Fecha</h2>
+    `;
+
+    for(let i = 1; i < partidos.length; i++){
+
+        const partido = partidos[i];
+
+        let jugador1 = "";
+        let jugador2 = "";
+
+        for(let j = 1; j < jugadores.length; j++){
+
+            if(Number(jugadores[j][0]) === Number(partido[2])){
+                jugador1 = jugadores[j][1];
+            }
+
+            if(Number(jugadores[j][0]) === Number(partido[3])){
+                jugador2 = jugadores[j][1];
+            }
+
+        }
+
+        const fecha = new Date(partido[0]).toLocaleDateString("es-AR");
+
+        const hora = new Date(partido[1]).toLocaleTimeString("es-AR",{
+            hour:"2-digit",
+            minute:"2-digit"
+        });
+
+        html += `
+
+        <div class="proximoPartido">
+
+            <h3>🎾 ${jugador1}</h3>
+
+            <strong>vs</strong>
+
+            <h3>${jugador2}</h3>
+
+            <p>📅 ${fecha}</p>
+
+            <p>🕒 ${hora}</p>
+
+            <p>🏟 Cancha ${partido[4]}</p>
+
+        </div>
+
+        `;
+
+    }
+
+    document.getElementById("ranking").innerHTML = html;
 
 }
