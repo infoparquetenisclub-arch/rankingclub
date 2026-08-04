@@ -283,6 +283,8 @@ function mostrarProximoPartido(idJugador){
 
         const partido = partidos[i];
 
+        console.log(partido);
+
         if(
             Number(partido[2]) === Number(idJugador) ||
             Number(partido[3]) === Number(idJugador)
