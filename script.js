@@ -407,3 +407,47 @@ function mostrarProximaFecha(){
     document.getElementById("ranking").innerHTML = html;
 
 }
+
+function mostrarNoticias() {
+
+    const noticias = datosRanking["NOTICIAS"];
+
+    const ranking = document.getElementById("ranking");
+
+    if (!noticias || noticias.length <= 1) {
+
+        ranking.innerHTML = `
+            <h2>📰 Noticias</h2>
+            <p>No hay noticias disponibles.</p>
+        `;
+
+        return;
+    }
+
+    let html = `
+        <h2>📰 Noticias</h2>
+    `;
+
+    for (let i = noticias.length - 1; i >= 1; i--) {
+
+        const noticia = noticias[i];
+
+        html += `
+            <div class="noticia">
+
+                <h3>${noticia[1]}</h3>
+
+                <p class="fecha-noticia">
+                    ${noticia[0]}
+                </p>
+
+                <p>
+                    ${noticia[2]}
+                </p>
+
+            </div>
+        `;
+    }
+
+    ranking.innerHTML = html;
+}
