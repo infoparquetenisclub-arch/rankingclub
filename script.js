@@ -2,11 +2,15 @@ const API_URL = "https://script.google.com/macros/s/AKfycby4G4OYsmHwj0FZ-PiG7LyY
 
 let datosRanking = {};
 
-fetch(API_URL)
+fetch(API_URL + "?t=" + Date.now())
     .then(response => response.json())
     .then(data => {
+
         datosRanking = data;
-        console.log(Object.keys(datosRanking));
+
+        console.log("DATOS RECIBIDOS:", datosRanking);
+        console.log("NOTICIAS RECIBIDAS:", datosRanking["NOTICIAS"]);
+
     })
     .catch(error => {
         console.error("Error al cargar los datos:", error);
