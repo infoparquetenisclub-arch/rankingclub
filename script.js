@@ -436,6 +436,28 @@ function mostrarNoticias() {
 
         const noticia = noticias[i];
 
+        // Enlace de la imagen
+        let imagen = noticia[3];
+
+        // Si la imagen viene de Google Drive,
+        // convertimos el enlace en uno que pueda mostrar el navegador
+        if (imagen && imagen.includes("drive.google.com")) {
+
+            const match = imagen.match(/\/d\/([a-zA-Z0-9_-]+)/);
+
+            if (match) {
+
+                const idImagen = match[1];
+
+                imagen = `https://drive.google.com/uc?export=view&id=${idImagen}`;
+
+            }
+        }
+
+        console.log("NOTICIA:", noticia[1]);
+        console.log("IMAGEN ORIGINAL:", noticia[3]);
+        console.log("IMAGEN CONVERTIDA:", imagen);
+
         html += `
             <div class="noticia">
 
@@ -444,6 +466,19 @@ function mostrarNoticias() {
                 <p class="fecha-noticia">
                     ${noticia[0]}
                 </p>
+
+                ${
+                    imagen
+                    ? `
+                        <img
+                            src="${imagen}"
+                            class="imagen-noticia"
+                            alt="${noticia[1]}"
+                            onerror="this.style.display='none'"
+                        >
+                      `
+                    : ""
+                }
 
                 <p>
                     ${noticia[2]}
