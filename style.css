@@ -425,7 +425,7 @@ opacity:1;
 
 .imagen-noticia {
     width: 100%;
-    max-height: 400px;
+    max-height: 350px;
     object-fit: cover;
     border-radius: 12px;
     margin: 15px 0;

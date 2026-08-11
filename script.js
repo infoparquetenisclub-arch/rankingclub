@@ -415,7 +415,6 @@ function mostrarProximaFecha(){
 function mostrarNoticias() {
 
     const noticias = datosRanking["NOTICIAS"];
-
     const ranking = document.getElementById("ranking");
 
     if (!noticias || noticias.length <= 1) {
@@ -436,52 +435,37 @@ function mostrarNoticias() {
 
         const noticia = noticias[i];
 
-        // Enlace de la imagen
-        let imagen = noticia[3];
+        const fecha = noticia[0];
+        const titulo = noticia[1];
+        const texto = noticia[2];
+        const idImagen = noticia[3];
 
-        // Si la imagen viene de Google Drive,
-        // convertimos el enlace en uno que pueda mostrar el navegador
-        if (imagen && imagen.includes("drive.google.com")) {
+        let imagenHTML = "";
 
-            const match = imagen.match(/\/d\/([a-zA-Z0-9_-]+)/);
+        if (idImagen && idImagen.trim() !== "") {
 
-            if (match) {
-
-                const idImagen = match[1];
-
-                imagen = `https://drive.google.com/uc?export=view&id=${idImagen}`;
-
-            }
+            imagenHTML = `
+                <img
+                    src="noticias/${idImagen.trim()}.jpg"
+                    class="imagen-noticia"
+                    alt="${titulo}"
+                >
+            `;
         }
-
-        console.log("NOTICIA:", noticia[1]);
-        console.log("IMAGEN ORIGINAL:", noticia[3]);
-        console.log("IMAGEN CONVERTIDA:", imagen);
 
         html += `
             <div class="noticia">
 
-                <h3>${noticia[1]}</h3>
+                <h3>${titulo}</h3>
 
                 <p class="fecha-noticia">
-                    ${noticia[0]}
+                    ${fecha}
                 </p>
 
-                ${
-                    imagen
-                    ? `
-                        <img
-                            src="${imagen}"
-                            class="imagen-noticia"
-                            alt="${noticia[1]}"
-                            onerror="this.style.display='none'"
-                        >
-                      `
-                    : ""
-                }
+                ${imagenHTML}
 
                 <p>
-                    ${noticia[2]}
+                    ${texto}
                 </p>
 
             </div>
