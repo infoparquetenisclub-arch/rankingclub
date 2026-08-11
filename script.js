@@ -316,12 +316,15 @@ function mostrarProximoPartido(idJugador){
 
             const fecha = new Date(partido[0]);
 
-const fechaFormateada = fecha.toLocaleDateString("es-AR");
+const fechaOriginal = new Date(partido[0]);
 
-const hora = new Date(partido[1]).toLocaleTimeString("es-AR", {
-    hour: "2-digit",
-    minute: "2-digit"
-});
+const dia = String(fechaOriginal.getDate()).padStart(2, "0");
+const mes = String(fechaOriginal.getMonth() + 1).padStart(2, "0");
+const año = fechaOriginal.getFullYear();
+
+const fechaFormateada = `${dia}/${mes}/${año}`;
+
+const hora = partido[1];
 
 html = `
 <div class="proximoPartido">
@@ -379,12 +382,15 @@ function mostrarProximaFecha(){
 
         }
 
-        const fecha = new Date(partido[0]).toLocaleDateString("es-AR");
+        const fechaOriginal = new Date(partido[0]);
 
-        const hora = new Date(partido[1]).toLocaleTimeString("es-AR",{
-            hour:"2-digit",
-            minute:"2-digit"
-        });
+const dia = String(fechaOriginal.getDate()).padStart(2, "0");
+const mes = String(fechaOriginal.getMonth() + 1).padStart(2, "0");
+const año = fechaOriginal.getFullYear();
+
+const fecha = `${dia}/${mes}/${año}`;
+
+        const hora = partido[1];
 
         html += `
 
