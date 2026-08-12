@@ -98,6 +98,29 @@ function verJugador(id){
 
 console.log(jugador);
 
+// Buscar la posición actual del jugador en su categoría
+
+const categoriaJugador = jugador[6];
+
+const rankingCategoria = datosRanking["CAT " + categoriaJugador];
+
+let posicionJugador = "";
+
+if (rankingCategoria) {
+
+    for (let i = 1; i < rankingCategoria.length; i++) {
+
+        if (Number(rankingCategoria[i][1]) === Number(jugador[0])) {
+
+            posicionJugador = rankingCategoria[i][0];
+            break;
+
+        }
+
+    }
+
+}
+
 
 
 
@@ -121,7 +144,11 @@ ficha.innerHTML = `
 
         <h2>${jugador[1]}</h2>
 
-        <p>Categoría ${jugador[6]}</p>
+<p>Categoría ${jugador[6]}</p>
+
+<div class="posicion-ranking">
+    🏆 Posición actual: <strong>#${posicionJugador}</strong>
+</div>
 
     </div>
 
@@ -149,7 +176,23 @@ ficha.innerHTML = `
 
             <div class="dato"><strong>Perdidos:</strong> ${jugador[10]}</div>
 
-            <div class="dato"><strong>Efectividad:</strong> ${jugador[11]}%</div>
+            <div class="efectividad">
+
+    <div class="efectividad-titulo">
+        <strong>🎯 Efectividad</strong>
+        <span>${jugador[11]}%</span>
+    </div>
+
+    <div class="barra-efectividad">
+
+        <div 
+            class="progreso-efectividad"
+            style="width: ${jugador[11]}%">
+        </div>
+
+    </div>
+
+</div>
 
         </div>
 
