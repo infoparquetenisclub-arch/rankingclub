@@ -200,6 +200,8 @@ ficha.innerHTML = `
 
     ${mostrarProximoPartido(jugador[0])}
 
+${calcularRacha(jugador[0])}
+
 ${mostrarPartidos(jugador[0])}
 
 </div>
@@ -263,9 +265,15 @@ function mostrarPartidos(idJugador){
     const partidos = datosRanking["PARTIDOS"];
     const jugadores = datosRanking["JUGADORES"];
 
-    let html = "<h3>🎾 Últimos partidos</h3>";
+    let html = "<h3>🎾 Últimos 5 partidos</h3>";
+
+    let cantidadPartidos = 0;
 
     for(let i = partidos.length - 1; i >= 1; i--){
+
+        if(cantidadPartidos >= 5){
+            break;
+        }
 
         const partido = partidos[i];
 
@@ -306,13 +314,88 @@ function mostrarPartidos(idJugador){
                 </div>
             `;
 
+            cantidadPartidos++;
+
         }
 
     }
 
-    console.log(html);
-
     return html;
+
+}
+
+function calcularRacha(idJugador){
+
+    const partidos = datosRanking["PARTIDOS"];
+
+    let tipoRacha = null;
+    let cantidad = 0;
+
+    // Recorremos desde el partido más reciente
+    for(let i = partidos.length - 1; i >= 1; i--){
+
+        const partido = partidos[i];
+
+        const participa =
+            Number(partido[2]) === Number(idJugador) ||
+            Number(partido[3]) === Number(idJugador);
+
+        if(participa){
+
+            const gano =
+                Number(partido[4]) === Number(idJugador);
+
+                console.log(
+    "RACHA:",
+    "Jugador:", idJugador,
+    "Partido:", partido,
+    "Ganador:", partido[4],
+    "¿Ganó?:", gano
+);
+
+            // Primer partido encontrado
+            if(tipoRacha === null){
+
+                tipoRacha = gano;
+                cantidad++;
+
+            } else if(tipoRacha === gano){
+
+                // Sigue la misma racha
+                cantidad++;
+
+            } else {
+
+                // La racha terminó
+                break;
+
+            }
+
+        }
+
+    }
+
+    if(cantidad === 0){
+        return "";
+    }
+
+    if(tipoRacha){
+
+        return `
+            <div class="racha racha-ganadora">
+                🔥 Racha actual: <strong>${cantidad} victoria${cantidad > 1 ? "s" : ""}</strong>
+            </div>
+        `;
+
+    } else {
+
+        return `
+            <div class="racha racha-perdedora">
+                🔴 Racha actual: <strong>${cantidad} derrota${cantidad > 1 ? "s" : ""}</strong>
+            </div>
+        `;
+
+    }
 
 }
 
