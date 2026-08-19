@@ -52,6 +52,10 @@
 
 <button class="categoria" onclick="mostrarNoticias()">📰 NOTICIAS</button>
 
+<button class="categoria" onclick="mostrarTorneos()">
+    🏆 TORNEOS
+</button>
+
 </div>
 
 <div id="ranking">
@@ -71,6 +75,19 @@
     </div>
 
 </div>
+
+<div id="modalPDF" class="modal">
+
+    <div class="modal-contenido pdf-modal">
+
+        <span class="cerrar" onclick="cerrarPDF()">&times;</span>
+
+        <iframe id="visorPDF" src=""></iframe>
+
+    </div>
+
+</div>
+
 </main>
 
 <script src="script.js"></script>

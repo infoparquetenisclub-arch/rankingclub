@@ -601,3 +601,52 @@ function mostrarNoticias() {
 
     ranking.innerHTML = html;
 }
+
+function mostrarTorneos(){
+
+    const torneos = datosRanking["TORNEOS"];
+    const ranking = document.getElementById("ranking");
+
+    if(!torneos || torneos.length <= 1){
+        ranking.innerHTML = `
+            <h2>🏆 Torneos</h2>
+            <p>No hay torneos disponibles.</p>
+        `;
+        return;
+    }
+
+    let html = `<h2>🏆 Torneos</h2>`;
+
+    for(let i=1; i<torneos.length; i++){
+
+        html += `
+            <div class="torneo">
+                <h3>${torneos[i][0]}</h3>
+
+                <button class="categoria"
+                    onclick="abrirPDF('${torneos[i][1]}')">
+
+                    📄 VER CUADRO
+
+                </button>
+
+            </div>
+        `;
+    }
+
+    ranking.innerHTML = html;
+}
+
+function abrirPDF(link){
+
+    document.getElementById("visorPDF").src = link;
+    document.getElementById("modalPDF").style.display = "block";
+
+}
+
+function cerrarPDF(){
+
+    document.getElementById("modalPDF").style.display = "none";
+    document.getElementById("visorPDF").src = "";
+
+}
