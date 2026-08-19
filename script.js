@@ -508,13 +508,8 @@ function mostrarProximaFecha(){
 
         }
 
-        const fechaOriginal = new Date(partido[0]);
-
-const dia = String(fechaOriginal.getDate()).padStart(2, "0");
-const mes = String(fechaOriginal.getMonth() + 1).padStart(2, "0");
-const año = fechaOriginal.getFullYear();
-
-const fecha = `${dia}/${mes}/${año}`;
+        // FORMATEAR FECHA SIN USAR new Date()
+        const fecha = String(partido[0]);
 
         const hora = partido[1];
 
