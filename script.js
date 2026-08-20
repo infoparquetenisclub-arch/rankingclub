@@ -639,9 +639,12 @@ function mostrarTorneos(){
 
 function abrirPDF(link){
 
-    document.getElementById("visorPDF").src = link;
-    document.getElementById("modalPDF").style.display = "block";
+    const id = link.match(/\/d\/(.*?)\//)[1];
 
+    document.getElementById("visorPDF").src =
+        `https://drive.google.com/file/d/${id}/preview`;
+
+    document.getElementById("modalPDF").style.display = "block";
 }
 
 function cerrarPDF(){
