@@ -254,6 +254,72 @@ function buscarJugador(){
 
 }
 
+function buscarCaraACara(letra){
+
+    const inputId = letra === "A"
+        ? "jugadorCaraA"
+        : "jugadorCaraB";
+
+    const resultadoId = letra === "A"
+        ? "resultadoCaraACaraA"
+        : "resultadoCaraACaraB";
+
+    const texto = document
+        .getElementById(inputId)
+        .value
+        .toUpperCase();
+
+    const lista = document.getElementById(resultadoId);
+
+    lista.innerHTML = "";
+
+    if(texto.length < 2){
+        return;
+    }
+
+    const jugadores = datosRanking["JUGADORES"];
+
+    if(!jugadores){
+        return;
+    }
+
+    for(let i = 1; i < jugadores.length; i++){
+
+        const jugador = jugadores[i];
+
+        if(
+            String(jugador[1])
+                .toUpperCase()
+                .includes(texto)
+        ){
+
+            lista.innerHTML += `
+                <div
+                    class="itemBusqueda"
+                    onclick="seleccionarCaraACara('${letra}', '${jugador[1].replace(/'/g, "\\'")}')"
+                >
+                    ${jugador[1]}
+                </div>
+            `;
+        }
+    }
+}
+
+function seleccionarCaraACara(letra, nombre){
+
+    const inputId = letra === "A"
+        ? "jugadorCaraA"
+        : "jugadorCaraB";
+
+    const resultadoId = letra === "A"
+        ? "resultadoCaraACaraA"
+        : "resultadoCaraACaraB";
+
+    document.getElementById(inputId).value = nombre;
+
+    document.getElementById(resultadoId).innerHTML = "";
+}
+
 function cerrarModal(){
 
     document.getElementById("modalJugador").style.display = "none";
@@ -651,5 +717,324 @@ function cerrarPDF(){
 
     document.getElementById("modalPDF").style.display = "none";
     document.getElementById("visorPDF").src = "";
+
+}
+
+function compararJugadores(){
+
+    const nombreA = document
+        .getElementById("jugadorCaraA")
+        .value
+        .trim()
+        .toUpperCase();
+
+    const nombreB = document
+        .getElementById("jugadorCaraB")
+        .value
+        .trim()
+        .toUpperCase();
+
+    const resultado = document.getElementById("resultadoCaraACara");
+
+    if(!nombreA || !nombreB){
+
+        resultado.innerHTML = `
+            <p>⚠️ Escribí los nombres de los dos jugadores.</p>
+        `;
+
+        return;
+    }
+
+    const jugadores = datosRanking["JUGADORES"];
+    const partidos = datosRanking["PARTIDOS"];
+
+    if(!jugadores || !partidos){
+
+        resultado.innerHTML = `
+            <p>⚠️ No se pudieron cargar los datos de jugadores y partidos.</p>
+        `;
+
+        return;
+    }
+
+    // Buscar jugador 1
+    let jugadorA = null;
+
+    for(let i = 1; i < jugadores.length; i++){
+
+        if(
+            String(jugadores[i][1]).trim().toUpperCase() === nombreA
+        ){
+
+            jugadorA = jugadores[i];
+            break;
+        }
+    }
+
+    // Buscar jugador 2
+    let jugadorB = null;
+
+    for(let i = 1; i < jugadores.length; i++){
+
+        if(
+            String(jugadores[i][1]).trim().toUpperCase() === nombreB
+        ){
+
+            jugadorB = jugadores[i];
+            break;
+        }
+    }
+
+    // Verificar jugadores
+    if(!jugadorA || !jugadorB){
+
+        resultado.innerHTML = `
+            <p>⚠️ No encontramos uno o ambos jugadores.</p>
+            <p>Revisá que los nombres estén escritos exactamente como aparecen en la app.</p>
+        `;
+
+        return;
+    }
+
+    // Evitar comparar al jugador consigo mismo
+    if(Number(jugadorA[0]) === Number(jugadorB[0])){
+
+        resultado.innerHTML = `
+            <p>⚠️ Seleccioná dos jugadores diferentes.</p>
+        `;
+
+        return;
+    }
+
+    const idA = Number(jugadorA[0]);
+    const idB = Number(jugadorB[0]);
+
+    // Contadores
+    let victoriasA = 0;
+    let victoriasB = 0;
+    let enfrentamientos = 0;
+
+    let ultimoPartido = null;
+
+    // Buscar enfrentamientos entre ambos
+    for(let i = partidos.length - 1; i >= 1; i--){
+
+        const partido = partidos[i];
+
+        const jugador1 = Number(partido[2]);
+        const jugador2 = Number(partido[3]);
+        const ganador = Number(partido[4]);
+
+        const esEnfrentamiento =
+            (jugador1 === idA && jugador2 === idB) ||
+            (jugador1 === idB && jugador2 === idA);
+
+        if(!esEnfrentamiento){
+            continue;
+        }
+
+        enfrentamientos++;
+
+        // Contar victorias
+        if(ganador === idA){
+            victoriasA++;
+        }
+
+        if(ganador === idB){
+            victoriasB++;
+        }
+
+        // Como recorremos desde el más reciente,
+        // el primero encontrado es el último partido
+        if(!ultimoPartido){
+
+            ultimoPartido = partido;
+
+        }
+
+    }
+
+    // Fotos
+    const fotoA = `fotos/${jugadorA[0]}.jpg`;
+    const fotoB = `fotos/${jugadorB[0]}.jpg`;
+
+    // Último partido
+    let ultimoHTML = "";
+
+    if(ultimoPartido){
+
+        const ganadorUltimo = Number(ultimoPartido[4]);
+
+        let ganadorNombre = "Sin resultado";
+
+        if(ganadorUltimo === idA){
+            ganadorNombre = jugadorA[1];
+        }
+
+        if(ganadorUltimo === idB){
+            ganadorNombre = jugadorB[1];
+        }
+
+        ultimoHTML = `
+            <div class="cara-a-cara-ultimo">
+
+                <h3>🎾 Último enfrentamiento</h3>
+
+                <p>
+                    <strong>${ultimoPartido[5]}</strong>
+                </p>
+
+                <p>
+                    🏆 Ganador:
+                    <strong>${ganadorNombre}</strong>
+                </p>
+
+                <p>
+                    <strong>Resultado:</strong>
+                    ${ultimoPartido[5]}
+                </p>
+
+            </div>
+        `;
+
+    }else{
+
+        ultimoHTML = `
+            <div class="cara-a-cara-ultimo">
+
+                <h3>🎾 Último enfrentamiento</h3>
+
+                <p>No hay partidos registrados entre estos jugadores.</p>
+
+            </div>
+        `;
+
+    }
+
+    // Resultado final
+    resultado.innerHTML = `
+
+        <div class="cara-a-cara-resultado">
+
+            <h2>⚔️ CARA A CARA</h2>
+
+            <div class="cara-a-cara-jugadores">
+
+                <div class="cara-a-cara-jugador">
+
+                    <img
+                        src="${fotoA}"
+                        alt="${jugadorA[1]}"
+                        onerror="this.src='fotos/sinfoto.jpg'"
+                    >
+
+                    <h3>${jugadorA[1]}</h3>
+
+                    <p>
+                        Categoría ${jugadorA[6]}
+                    </p>
+
+                    <div class="cara-a-cara-victorias">
+                        <strong>${victoriasA}</strong>
+                        <span>victorias</span>
+                    </div>
+
+                </div>
+
+
+                <div class="cara-a-cara-vs">
+
+                    <strong>VS</strong>
+
+                </div>
+
+
+                <div class="cara-a-cara-jugador">
+
+                    <img
+                        src="${fotoB}"
+                        alt="${jugadorB[1]}"
+                        onerror="this.src='fotos/sinfoto.jpg'"
+                    >
+
+                    <h3>${jugadorB[1]}</h3>
+
+                    <p>
+                        Categoría ${jugadorB[6]}
+                    </p>
+
+                    <div class="cara-a-cara-victorias">
+                        <strong>${victoriasB}</strong>
+                        <span>victorias</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="cara-a-cara-resumen">
+
+                <h3>📊 Resumen</h3>
+
+                <p>
+                    <strong>${enfrentamientos}</strong>
+                    enfrentamiento${enfrentamientos !== 1 ? "s" : ""}
+                </p>
+
+            </div>
+
+
+            <div class="cara-a-cara-estadisticas">
+
+                <div>
+
+                    <h3>${jugadorA[1]}</h3>
+
+                    <p>🎾 Partidos: ${jugadorA[8]}</p>
+                    <p>🟢 Ganados: ${jugadorA[9]}</p>
+                    <p>🔴 Perdidos: ${jugadorA[10]}</p>
+                    <p>🎯 Efectividad: ${jugadorA[11]}%</p>
+
+                </div>
+
+
+                <div>
+
+                    <h3>${jugadorB[1]}</h3>
+
+                    <p>🎾 Partidos: ${jugadorB[8]}</p>
+                    <p>🟢 Ganados: ${jugadorB[9]}</p>
+                    <p>🔴 Perdidos: ${jugadorB[10]}</p>
+                    <p>🎯 Efectividad: ${jugadorB[11]}%</p>
+
+                </div>
+
+            </div>
+
+
+            ${ultimoHTML}
+
+        </div>
+
+    `;
+
+}
+
+function mostrarCaraACara(){
+
+    const seccion = document.getElementById("caraACara");
+
+    if(!seccion){
+        console.error("No se encontró la sección caraACara");
+        return;
+    }
+
+    seccion.style.display = "block";
+
+    seccion.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
 
 }

@@ -8,7 +8,9 @@
     <link rel="manifest" href="https://rankingclub.vercel.app/manifest.json">
     <link rel="icon" type="image/png" href="/icons/icon-192.png">
 <meta name="theme-color" content="#0B6B3A">
-</head>
+
+<link rel="icon" type="image/png" href="/icons/icon-192.png">
+<meta name="theme-color" content="#0B6B3A">
 
 <body>
 
@@ -58,6 +60,57 @@
 <button class="categoria" onclick="mostrarTorneos()">
     🏆 TORNEOS
 </button>
+
+<button class="categoria" onclick="mostrarCaraACara()">
+    🎾 CARA A CARA
+</button>
+
+</div>
+
+<div id="caraACara" style="display:none;">
+
+    <h2>🎾 CARA A CARA</h2>
+
+    <p>Compará el historial de dos jugadores</p>
+
+    <div class="cara-a-cara-form">
+
+        <div>
+            <label for="jugadorCaraA">Jugador 1</label>
+            <input
+                type="text"
+                id="jugadorCaraA"
+                placeholder="Escribí el nombre"
+                autocomplete="off"
+                oninput="buscarCaraACara('A')"
+                
+            >
+
+            <div id="resultadoCaraACaraA"></div>
+
+        </div>
+
+        <div>
+            <label for="jugadorCaraB">Jugador 2</label>
+            <input
+                type="text"
+                id="jugadorCaraB"
+                placeholder="Escribí el nombre"
+                autocomplete="off"
+                oninput="buscarCaraACara('B')"
+            >
+
+            <div id="resultadoCaraACaraB"></div>
+
+        </div>
+
+    </div>
+
+    <button class="categoria" onclick="compararJugadores()">
+        ⚔️ COMPARAR
+    </button>
+
+    <div id="resultadoCaraACara"></div>
 
 </div>
 
