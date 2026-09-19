@@ -1,4 +1,4 @@
-const CACHE_NAME = "parque-tenis-v1";
+const CACHE_NAME = "parque-tenis-v2";
 
 const ARCHIVOS = [
 "/",
