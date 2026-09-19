@@ -24,6 +24,8 @@ function mostrarCategoria(cat) {
 
     const ranking = document.getElementById("ranking");
 
+    document.getElementById("caraACara").style.display = "none";
+
     if (!datos) {
         ranking.innerHTML = "<h2>No hay datos para esta categoría.</h2>";
         return;
