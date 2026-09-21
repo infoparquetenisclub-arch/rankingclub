@@ -1026,17 +1026,40 @@ function compararJugadores(){
 function mostrarCaraACara(){
 
     const seccion = document.getElementById("caraACara");
+    const ranking = document.getElementById("ranking");
 
     if(!seccion){
         console.error("No se encontró la sección caraACara");
         return;
     }
 
-    seccion.style.display = "block";
+    // Ocultar completamente el ranking actual
+    if(ranking){
+        ranking.hidden = true;
+        ranking.style.setProperty("display", "none", "important");
+    }
+
+    // Mostrar solamente Cara a Cara
+    seccion.hidden = false;
+    seccion.style.setProperty("display", "block", "important");
 
     seccion.scrollIntoView({
         behavior: "smooth",
         block: "start"
     });
-
 }
+
+// Cerrar Cara a Cara al cambiar de sección
+document.addEventListener("click", function(event) {
+
+    const botonMenu = event.target.closest(".menu > .categoria");
+
+    if (!botonMenu) return;
+
+    const caraACara = document.getElementById("caraACara");
+
+    if (caraACara) {
+        caraACara.style.display = "none";
+    }
+
+}, true);
