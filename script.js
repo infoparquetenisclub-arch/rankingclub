@@ -1033,33 +1033,57 @@ function mostrarCaraACara(){
         return;
     }
 
-    // Ocultar completamente el ranking actual
+    // Ocultar completamente cualquier contenido del ranking
     if(ranking){
         ranking.hidden = true;
         ranking.style.setProperty("display", "none", "important");
+        ranking.style.setProperty("visibility", "hidden", "important");
     }
 
     // Mostrar solamente Cara a Cara
     seccion.hidden = false;
     seccion.style.setProperty("display", "block", "important");
+    seccion.style.setProperty("visibility", "visible", "important");
 
+    // Llevar la pantalla al comienzo de Cara a Cara
     seccion.scrollIntoView({
         behavior: "smooth",
         block: "start"
     });
 }
 
-// Cerrar Cara a Cara al cambiar de sección
+// Cambiar correctamente entre las secciones
 document.addEventListener("click", function(event) {
 
-    const botonMenu = event.target.closest(".menu > .categoria");
+    const botonMenu = event.target.closest("button.categoria");
 
     if (!botonMenu) return;
 
-    const caraACara = document.getElementById("caraACara");
+    const accion = botonMenu.getAttribute("onclick") || "";
 
+    const caraACara = document.getElementById("caraACara");
+    const ranking = document.getElementById("ranking");
+
+    // Si estamos abriendo CARA A CARA,
+    // dejamos que mostrarCaraACara() haga su trabajo.
+    if (accion.includes("mostrarCaraACara")) {
+        return;
+    }
+
+    // Estamos abriendo cualquier otra sección:
+    // cerrar CARA A CARA
     if (caraACara) {
-        caraACara.style.display = "none";
+        caraACara.hidden = true;
+        caraACara.style.setProperty("display", "none", "important");
+        caraACara.style.removeProperty("visibility");
+    }
+
+    // Y MUY IMPORTANTE:
+    // volver a mostrar el ranking
+    if (ranking) {
+        ranking.hidden = false;
+        ranking.style.setProperty("display", "block", "important");
+        ranking.style.setProperty("visibility", "visible", "important");
     }
 
 }, true);
