@@ -11,6 +11,8 @@ fetch(API_URL + "?t=" + Date.now())
         console.log("DATOS RECIBIDOS:", datosRanking);
         console.log("NOTICIAS RECIBIDAS:", datosRanking["NOTICIAS"]);
 
+        mostrarAvisoFlotante();
+
     })
     .catch(error => {
         console.error("Error al cargar los datos:", error);
@@ -1087,3 +1089,113 @@ document.addEventListener("click", function(event) {
     }
 
 }, true);
+
+
+function mostrarAvisoFlotante() {
+    const avisos = datosRanking["AVISOS"];
+
+    // Si no hay avisos, no mostrar nada
+    if (!avisos || avisos.length < 2) return;
+
+    const encabezados = avisos[0];
+
+    const indiceActivo = encabezados.indexOf("ACTIVO");
+    const indiceTitulo = encabezados.indexOf("TITULO");
+    const indiceMensaje = encabezados.indexOf("MENSAJE");
+    const indiceNoticia = encabezados.indexOf("TITULO_NOTICIA");
+
+    const aviso = avisos[1];
+
+    if (
+        indiceActivo === -1 ||
+        String(aviso[indiceActivo]).trim().toUpperCase() !== "SI"
+    ) {
+        return;
+    }
+
+    const titulo = aviso[indiceTitulo] || "Novedad del club";
+    const mensaje = aviso[indiceMensaje] || "";
+    const tituloNoticia = aviso[indiceNoticia] || "";
+
+    let globo = document.getElementById("avisoFlotante");
+
+    if (!globo) {
+        globo = document.createElement("button");
+        globo.id = "avisoFlotante";
+        globo.type = "button";
+        globo.style.cssText = `
+            position: fixed;
+            bottom: 20px;
+            left: 16px;
+            z-index: 9999;
+            max-width: 320px;
+            padding: 14px 18px;
+            border: none;
+            border-radius: 16px;
+            background: #0B6B3A;
+            color: white;
+            text-align: left;
+            font-size: 15px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+            cursor: pointer;
+        `;
+
+     
+
+globo.addEventListener("click", function () {
+    const botonNoticias = Array.from(
+        document.querySelectorAll("button.categoria")
+    ).find(boton =>
+        (boton.getAttribute("onclick") || "")
+            .includes("mostrarNoticias")
+    );
+
+    if (botonNoticias) {
+        botonNoticias.click();
+    } else {
+        console.warn("No se encontró el botón de Noticias.");
+        return;
+    }
+
+    if (tituloNoticia) {
+        setTimeout(function () {
+            const noticias = document.querySelectorAll(".noticia");
+
+            const noticiaEncontrada = Array.from(noticias).find(
+                noticia => {
+                    const titulo = noticia.querySelector("h3");
+                    return titulo &&
+                        titulo.textContent.trim() === tituloNoticia.trim();
+                }
+            );
+
+            if (noticiaEncontrada) {
+                noticiaEncontrada.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
+                noticiaEncontrada.style.outline = "3px solid #0B6B3A";
+                noticiaEncontrada.style.outlineOffset = "4px";
+            } else {
+                console.warn(
+                    "No se encontró la noticia:",
+                    tituloNoticia
+                );
+            }
+        }, 500);
+    }
+});
+
+
+
+        document.body.appendChild(globo);
+    }
+
+    globo.innerHTML = `
+        <strong>📢 ${titulo}</strong>
+        <br>
+        <span>${mensaje}</span>
+        <br>
+        <small>👉 Tocá para ver más</small>
+    `;
+}
