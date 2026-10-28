@@ -1072,6 +1072,11 @@ document.addEventListener("click", function(event) {
         return;
     }
 
+    // Si estamos comparando jugadores, no cambiar de sección.
+if (accion.includes("compararJugadores")) {
+    return;
+}
+
     // Estamos abriendo cualquier otra sección:
     // cerrar CARA A CARA
     if (caraACara) {
