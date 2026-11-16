@@ -672,6 +672,8 @@ function mostrarNoticias() {
     ranking.innerHTML = html;
 }
 
+
+
 function mostrarTorneos(){
 
     const torneos = datosRanking["TORNEOS"];
@@ -685,27 +687,122 @@ function mostrarTorneos(){
         return;
     }
 
-    let html = `<h2>🏆 Torneos</h2>`;
+    // Agrupar los cuadros por torneo
+    const grupos = {};
 
-    for(let i=1; i<torneos.length; i++){
+    for(let i = 1; i < torneos.length; i++){
+
+        const fila = torneos[i];
+
+        const nombre = fila[0];
+        const estado = fila[1];
+        const categoria = fila[2];
+        const link = fila[3];
+
+        if(!nombre || !categoria) continue;
+
+        if(!grupos[nombre]){
+            grupos[nombre] = {
+                estado: estado,
+                cuadros: []
+            };
+        }
+
+        grupos[nombre].cuadros.push({
+            categoria: categoria,
+            link: link
+        });
+    }
+
+    let html = `
+        <h2>🏆 Torneos</h2>
+        <p>Seleccioná el torneo que querés consultar</p>
+    `;
+
+    let contador = 0;
+
+    for(const nombre in grupos){
+
+        const id = "cuadrosTorneo" + contador;
+        const torneo = grupos[nombre];
 
         html += `
             <div class="torneo">
-                <h3>${torneos[i][0]}</h3>
 
                 <button class="categoria"
-                    onclick="abrirPDF('${torneos[i][1]}')">
+                    onclick="toggleTorneo('${id}')">
 
-                    📄 VER CUADRO
+                    🏆 ${nombre}
+                    <br>
+                    <small>${torneo.estado}</small>
 
                 </button>
 
+                <div id="${id}" class="torneo-cuadros"
+                     style="display:none;">
+
+        `;
+
+        torneo.cuadros.forEach(cuadro => {
+
+            html += `
+                <div class="torneo">
+
+                    <h3>${cuadro.categoria}</h3>
+
+                    ${
+                        cuadro.link
+                        ? `<button class="categoria"
+                            onclick="abrirPDF('${cuadro.link}')">
+                            📄 VER CUADRO
+                           </button>`
+                        : `<p>📋 Cuadro pendiente de carga</p>`
+                    }
+
+                </div>
+            `;
+
+        });
+
+        html += `
+                </div>
             </div>
         `;
+
+        contador++;
     }
 
     ranking.innerHTML = html;
 }
+
+
+// Abrir un torneo y cerrar los demás
+function toggleTorneo(id){
+
+    const seleccionado = document.getElementById(id);
+
+    const todos = document.querySelectorAll(".torneo-cuadros");
+
+    todos.forEach(cuadro => {
+
+        if(cuadro.id === id){
+
+            cuadro.style.display =
+                cuadro.style.display === "none"
+                ? "block"
+                : "none";
+
+        }else{
+
+            cuadro.style.display = "none";
+
+        }
+
+    });
+
+}
+
+
 
 function abrirPDF(link){
 
